@@ -1,0 +1,8 @@
+clusters:
+- name: test
+  brokers:
+  - b-1.xxx.c3.kafka.eu-central-1.amazonaws.com:9098
+  SASL:
+    mechanism: AWS_MSK_IAM
+    region: eu-central-1
+  security-protocol: SASL_SSL
