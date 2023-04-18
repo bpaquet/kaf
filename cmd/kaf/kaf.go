@@ -111,7 +111,11 @@ func getConfig() (saramaConfig *sarama.Config) {
 			//Here setup get token function
 			saramaConfig.Net.SASL.Mechanism = sarama.SASLMechanism(sarama.SASLTypeOAuth)
 			saramaConfig.Net.SASL.TokenProvider = newTokenProvider()
-
+		} else if cluster.SASL.Mechanism == "AWS_MSK_IAM" {
+			saramaConfig.Net.SASL.Mechanism = sarama.SASLMechanism(sarama.SASLTypeAWSMSKIAM)
+			saramaConfig.Net.SASL.AWSMSKIAM = sarama.AWSMSKIAMConfig{
+				Region: cluster.SASL.AwsRegion,
+			}
 		}
 	}
 	return saramaConfig
