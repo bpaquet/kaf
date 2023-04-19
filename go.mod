@@ -6,6 +6,7 @@ require (
 	github.com/Landoop/schema-registry v0.0.0-20190327143759-50a5701c1891
 	github.com/Masterminds/sprig v2.22.0+incompatible
 	github.com/Shopify/sarama v1.36.0
+	github.com/bpaquet/awsIamMskForSarama v1.0.0
 	github.com/golang/protobuf v1.5.2
 	github.com/hokaccha/go-prettyjson v0.0.0-20190818114111-108c894c2c0e
 	github.com/jhump/protoreflect v1.15.1
@@ -28,7 +29,6 @@ require (
 	github.com/Masterminds/goutils v1.1.1 // indirect
 	github.com/Masterminds/semver v1.5.0 // indirect
 	github.com/Microsoft/go-winio v0.5.2 // indirect
-	github.com/aws/aws-sdk-go v1.44.245 // indirect
 	github.com/aws/aws-sdk-go-v2 v1.17.8 // indirect
 	github.com/aws/aws-sdk-go-v2/config v1.18.21 // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.20 // indirect
@@ -66,8 +66,8 @@ require (
 	github.com/jcmturner/gofork v1.7.6 // indirect
 	github.com/jcmturner/gokrb5/v8 v8.4.3 // indirect
 	github.com/jcmturner/rpc/v2 v2.0.3 // indirect
-	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/klauspost/compress v1.15.14 // indirect
+	github.com/kr/text v0.2.0 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
 	github.com/mitchellh/copystructure v1.2.0 // indirect
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
@@ -77,6 +77,7 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475 // indirect
+	github.com/rogpeppe/go-internal v1.10.0 // indirect
 	github.com/segmentio/kafka-go v0.4.36 // indirect
 	github.com/sirupsen/logrus v1.8.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
@@ -97,4 +98,5 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace github.com/Shopify/sarama v1.36.0 => github.com/bpaquet/sarama v0.0.0-20230418080524-489d0f04cd02
+replace github.com/Shopify/sarama v1.36.0 => github.com/bpaquet/sarama v0.0.0-20230419210052-671ea0315a61
+replace github.com/bpaquet/awsIamMskForSarama v1.0.0 => github.com/bpaquet/awsIamMskForSarama v0.0.0-20230419210325-7d2031861bfd

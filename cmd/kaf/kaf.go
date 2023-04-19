@@ -17,6 +17,8 @@ import (
 	"github.com/birdayz/kaf/pkg/avro"
 	"github.com/birdayz/kaf/pkg/config"
 	"github.com/birdayz/kaf/pkg/proto"
+
+	"github.com/bpaquet/awsIamMskForSarama"
 )
 
 var cfgFile string
@@ -112,10 +114,8 @@ func getConfig() (saramaConfig *sarama.Config) {
 			saramaConfig.Net.SASL.Mechanism = sarama.SASLMechanism(sarama.SASLTypeOAuth)
 			saramaConfig.Net.SASL.TokenProvider = newTokenProvider()
 		} else if cluster.SASL.Mechanism == "AWS_MSK_IAM" {
-			saramaConfig.Net.SASL.Mechanism = sarama.SASLMechanism(sarama.SASLTypeAWSMSKIAM)
-			saramaConfig.Net.SASL.AWSMSKIAM = sarama.AWSMSKIAMConfig{
-				Region: cluster.SASL.AwsRegion,
-			}
+			saramaConfig.Net.SASL.Mechanism = sarama.SASLMechanism(sarama.SASLTypeCustom)
+			saramaConfig.Net.SASL.SCRAMClientGeneratorFuncCustom = func() sarama.SCRAMClientCustom { return &awsIamMskForSarama.GeneratorFunc{AwsRegion: cluster.SASL.AwsRegion} }
 		}
 	}
 	return saramaConfig
