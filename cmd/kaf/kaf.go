@@ -104,18 +104,35 @@ func getConfig() (saramaConfig *sarama.Config) {
 	}
 	if cluster.SecurityProtocol == "SASL_SSL" || cluster.SecurityProtocol == "SASL_PLAINTEXT" {
 		if cluster.SASL.Mechanism == "SCRAM-SHA-512" {
-			saramaConfig.Net.SASL.SCRAMClientGeneratorFunc = func() sarama.SCRAMClient { return &XDGSCRAMClient{HashGeneratorFcn: SHA512} }
-			saramaConfig.Net.SASL.Mechanism = sarama.SASLMechanism(sarama.SASLTypeSCRAMSHA512)
+			saramaConfig.Net.SASL.SCRAMClientExternalGeneratorFunc = func() sarama.SCRAMClientExternal {
+				return &XDGSCRAMClient{
+					Mechanism:        "SCRAM-SHA-512",
+					UserName:         cluster.SASL.Username,
+					Password:         cluster.SASL.Password,
+					AuthzID:          "",
+					HashGeneratorFcn: SHA512,
+				}
+			}
+			saramaConfig.Net.SASL.Mechanism = sarama.SASLMechanism(sarama.SASLTypeCustom)
 		} else if cluster.SASL.Mechanism == "SCRAM-SHA-256" {
-			saramaConfig.Net.SASL.SCRAMClientGeneratorFunc = func() sarama.SCRAMClient { return &XDGSCRAMClient{HashGeneratorFcn: SHA256} }
-			saramaConfig.Net.SASL.Mechanism = sarama.SASLMechanism(sarama.SASLTypeSCRAMSHA256)
+			saramaConfig.Net.SASL.SCRAMClientExternalGeneratorFunc = func() sarama.SCRAMClientExternal {
+				return &XDGSCRAMClient{
+					Mechanism:        "SCRAM-SHA-256",
+					UserName:         cluster.SASL.Username,
+					Password:         cluster.SASL.Password,
+					AuthzID:          "",
+					HashGeneratorFcn: SHA256,
+				}
+			}
+			saramaConfig.Net.SASL.Mechanism = sarama.SASLMechanism(sarama.SASLTypeCustom)
 		} else if cluster.SASL.Mechanism == "OAUTHBEARER" {
 			//Here setup get token function
 			saramaConfig.Net.SASL.Mechanism = sarama.SASLMechanism(sarama.SASLTypeOAuth)
 			saramaConfig.Net.SASL.TokenProvider = newTokenProvider()
 		} else if cluster.SASL.Mechanism == "AWS_MSK_IAM" {
-			saramaConfig.Net.SASL.Mechanism = sarama.SASLMechanism(sarama.SASLTypeCustom)
-			saramaConfig.Net.SASL.SCRAMClientGeneratorFuncCustom = func() sarama.SCRAMClientCustom { return &awsIamMskForSarama.GeneratorFunc{AwsRegion: cluster.SASL.AwsRegion} }
+			saramaConfig.Net.SASL.SCRAMClientExternalGeneratorFunc = func() sarama.SCRAMClientExternal {
+				return &awsIamMskForSarama.GeneratorFunc{AwsRegion: cluster.SASL.AwsRegion}
+			}
 		}
 	}
 	return saramaConfig
