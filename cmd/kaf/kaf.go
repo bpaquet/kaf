@@ -130,6 +130,8 @@ func getConfig() (saramaConfig *sarama.Config) {
 			saramaConfig.Net.SASL.Mechanism = sarama.SASLMechanism(sarama.SASLTypeOAuth)
 			saramaConfig.Net.SASL.TokenProvider = newTokenProvider()
 		} else if cluster.SASL.Mechanism == "AWS_MSK_IAM" {
+			saramaConfig.Net.SASL.Mechanism = sarama.SASLMechanism(sarama.SASLTypeCustom)
+			saramaConfig.Net.SASL.Version = sarama.SASLHandshakeV1
 			saramaConfig.Net.SASL.SCRAMClientExternalGeneratorFunc = func() sarama.SCRAMClientExternal {
 				return &awsIamMskForSarama.GeneratorFunc{AwsRegion: cluster.SASL.AwsRegion}
 			}
